@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enerji Tasarrufu Verileri - Akıllı Sokak Lambası</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Ek stil -->
+    <style>
+        .chart-container {
+            height: 400px;
+            margin-bottom: 30px;
+        }
+        .data-card {
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+        .data-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+        .comparison-table th, .comparison-table td {
+            color: white;
+            padding: 12px 15px;
+            vertical-align: middle;
+        }
+        .highlight {
+            background: rgba(255, 210, 0, 0.1);
+            border-left: 4px solid #ffd200;
+        }
+        .big-number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 0.8rem;
+            letter-spacing: -0.05em;
+        }
+        .stat-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+        .map-container {
+            height: 400px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        .city-map-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 100%);
+            z-index: 1;
+        }
+        .city-map-bg:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.07) 1%, transparent 3%),
+                             radial-gradient(circle at 30% 40%, rgba(255, 255, 255, 0.05) 1%, transparent 4%),
+                             radial-gradient(circle at 50% 10%, rgba(255, 255, 255, 0.07) 1%, transparent 3%),
+                             radial-gradient(circle at 70% 30%, rgba(255, 255, 255, 0.05) 1%, transparent 3%),
+                             radial-gradient(circle at 90% 60%, rgba(255, 255, 255, 0.07) 1%, transparent 4%),
+                             radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.05) 1%, transparent 3%),
+                             radial-gradient(circle at 60% 70%, rgba(255, 255, 255, 0.07) 1%, transparent 2%),
+                             radial-gradient(circle at 80% 90%, rgba(255, 255, 255, 0.05) 1%, transparent 2%);
+            background-size: 100% 100%;
+            z-index: 1;
+        }
+        .map-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            z-index: 2;
+        }
+        .map-stats {
+            display: flex;
+            margin-top: 20px;
+            width: 100%;
+            justify-content: space-around;
+        }
+        .map-stat-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 18px 22px;
+            border-radius: 12px;
+            width: 180px;
+            text-align: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .map-stat-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Birikimli Tasarruf Zaman Çizelgesi Stilleri */
+        .cumulative-savings {
+            position: relative;
+        }
+        
+        .savings-display {
+            margin: 40px 0;
+            transition: all 0.5s ease;
+        }
+        
+        .savings-display .big-number {
+            font-size: 4rem;
+            font-weight: 800;
+            color: #ffd700;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+            transition: all 0.8s ease;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .slider-container {
+            position: relative;
+            padding: 30px 0;
+            margin: 40px 0;
+        }
+        
+        .slider-container::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-50%);
+            border-radius: 3px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2) inset;
+        }
+        
+        .custom-range {
+            height: 18px;
+            border-radius: 10px;
+            background: transparent;
+            cursor: pointer;
+            position: relative;
+            z-index: 5;
+        }
+        
+        .custom-range::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #3498db;
+            cursor: pointer;
+            border: 4px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.2s ease;
+        }
+        
+        .custom-range::-webkit-slider-thumb:hover {
+            background: #2980b9;
+            transform: scale(1.1);
+        }
+        
+        .custom-range::-moz-range-thumb {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #3498db;
+            cursor: pointer;
+            border: 4px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.2s ease;
+        }
+        
+        .custom-range::-moz-range-thumb:hover {
+            background: #2980b9;
+            transform: scale(1.1);
+        }
+        
+        .year-markers {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .impact-item {
+            padding: 20px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            margin-bottom: 15px;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(5px);
+            height: 100%;
+        }
+        
+        .impact-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .impact-item div:first-of-type {
+            font-size: 38px;
+            font-weight: 700;
+            color: white;
+            margin: 15px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .impact-item:hover div:first-of-type {
+            transform: scale(1.1);
+        }
+        
+        /* Animasyon için */
+        @keyframes glow {
+            0% { text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+            50% { text-shadow: 0 0 25px rgba(255, 215, 0, 0.8); }
+            100% { text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+        }
+        
+        .highlight-animation {
+            animation: glow 1.5s ease-in-out;
+        }
+        
+        /* Daha modern navbar stilleri */
+        .navbar {
+            padding: 15px 25px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 22px;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-brand:hover {
+            transform: translateY(-2px);
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .nav-link {
+            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin: 0 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .nav-link.active {
+            font-weight: 600;
+            color: white !important;
+        }
+        
+        /* Ek faydalar bölümü geliştirmeleri */
+        .benefit-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            margin-bottom: 20px;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .text-center:hover .benefit-icon {
+            transform: scale(1.1) rotate(5deg);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Sayfa yükleme animasyonu */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="city-background">
+        <div class="stars"></div>
+        <div class="container">
+            <!-- Navbar -->
+            <nav class="navbar navbar-expand-lg navbar-dark glass-card mt-3 mb-4">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="index.html">
+                        <i class="fas fa-lightbulb me-2"></i>Akıllı Sokak Lambası
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="index.html">Ana Sayfa</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="energy-savings.html">Enerji Tasarrufu Verileri</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="row">
+                <div class="col-md-10 offset-md-1">
+                    <div class="header-container text-center fade-in">
+                        <h1 class="text-white mb-3" style="font-size: 1.8rem;"><i class="fas fa-leaf me-2"></i>Türkiye Genelinde Enerji Tasarrufu Potansiyeli</h1>
+                        <p class="text-white lead" style="font-size: 1rem;">Akıllı sokak lambalarının ulusal ölçekteki çevresel ve ekonomik etkileri</p>
+                    </div>
+
+                    <!-- Türkiye Haritası -->
+                    <div class="card glass-card mb-5 fade-in">
+                        <div class="card-body p-0">
+                            <div class="map-container">
+                                <div class="city-map-bg"></div>
+                                <div class="map-overlay">
+                                    <h2 style="font-size: 1.6rem;">Türkiye'deki Sokak Lambaları</h2>
+                                    <p class="mb-3" style="font-size: 0.95rem;">Türkiye genelinde yaklaşık 7.5 milyon sokak lambası bulunmaktadır</p>
+                                    <div class="map-stats">
+                                        <div class="map-stat-item">
+                                            <div class="big-number" style="font-size: 2rem;"><i class="fas fa-bolt"></i></div>
+                                            <div style="font-size: 0.95rem;">7.5 Milyon</div>
+                                            <div class="stat-subtitle" style="font-size: 0.85rem;">Toplam Lamba</div>
+                                        </div>
+                                        <div class="map-stat-item">
+                                            <div class="big-number" style="font-size: 2rem;">180W</div>
+                                            <div style="font-size: 0.95rem;">Ortalama Güç</div>
+                                            <div class="stat-subtitle" style="font-size: 0.85rem;">Lamba Başına</div>
+                                        </div>
+                                        <div class="map-stat-item">
+                                            <div class="big-number" style="font-size: 2rem;">12 Saat</div>
+                                            <div style="font-size: 0.95rem;">Günlük Çalışma</div>
+                                            <div class="stat-subtitle" style="font-size: 0.85rem;">Ortalama</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Özet Grafikler - Türkiye Geneli -->
+                            <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="card glass-card data-card mb-3 fade-in">
+                                <div class="card-body text-center py-3">
+                                    <div class="display-6 text-warning mb-2">
+                                        <i class="fas fa-bolt"></i>
+                                    </div>
+                                    <h2 class="text-white" style="font-size: 1.5rem;">20%</h2>
+                                    <p class="text-white" style="font-size: 0.95rem;">Enerji Tasarrufu</p>
+                                    <p class="text-white-50" style="font-size: 0.85rem;">1.18 Milyar kWh/yıl</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card glass-card data-card mb-3 fade-in">
+                                <div class="card-body text-center py-3">
+                                    <div class="display-6 text-info mb-2">
+                                        <i class="fas fa-coins"></i>
+                                    </div>
+                                    <h2 class="text-white" style="font-size: 1.5rem;">₺2.95 Milyar</h2>
+                                    <p class="text-white" style="font-size: 0.95rem;">Yıllık Tasarruf</p>
+                                    <p class="text-white-50" style="font-size: 0.85rem;">Ulusal ölçekte mali tasarruf</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Karşılaştırma Tablosu -->
+                    <div class="card glass-card mb-4 fade-in">
+                        <div class="card-header">
+                            <h4><i class="fas fa-table me-2"></i>Ulusal Ölçekte Karşılaştırma</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-borderless comparison-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Özellik</th>
+                                            <th>Geleneksel Sistem</th>
+                                            <th>Akıllı Sistem</th>
+                                            <th>Fark</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Yıllık Enerji Tüketimi (GWh)</td>
+                                            <td>5,913 GWh</td>
+                                            <td>4,730 GWh</td>
+                                            <td class="text-success">-1,183 GWh</td>
+                                        </tr>
+                                        <tr class="highlight">
+                                            <td>Yıllık Elektrik Maliyeti</td>
+                                            <td>₺30.75 Milyar</td>
+                                            <td>₺24.60 Milyar</td>
+                                            <td class="text-success">-₺6.15 Milyar</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Ortalama Lamba Ömrü</td>
+                                            <td>10,000 saat</td>
+                                            <td>50,000 saat</td>
+                                            <td class="text-success">+40,000 saat</td>
+                                        </tr>
+                                        <tr class="highlight">
+                                            <td>5 Yıllık Toplam Maliyet</td>
+                                            <td>₺153.75 Milyar</td>
+                                            <td>₺123.00 Milyar</td>
+                                            <td class="text-success">-₺30.75 Milyar</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Birikimli Tasarruf Zaman Çizelgesi -->
+                    <div class="card glass-card mb-5 fade-in">
+                        <div class="card-header">
+                            <h4><i class="fas fa-chart-line me-2"></i>Birikimli Tasarruf Etkisi</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="cumulative-savings">
+                                <div class="row mb-4">
+                                    <div class="col-md-8 offset-md-2 text-center">
+                                        <h2 class="text-white" style="font-size: 1.4rem;">Yıl: <span id="year-display">6</span></h2>
+                                        <div class="savings-display">
+                                            <div class="big-number" id="savings-amount" style="font-size: 2.7rem;">₺17.70 Milyar</div>
+                                            <div class="text-white-50" style="font-size: 0.9rem;">Toplam Birikimli Tasarruf</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="slider-container">
+                                    <input type="range" class="form-range custom-range" min="1" max="10" id="year-slider" value="6" step="1">
+                                    <div class="year-markers">
+                                        <span>1</span>
+                                        <span>2</span>
+                                        <span>4</span>
+                                        <span>6</span>
+                                        <span>8</span>
+                                        <span>10</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="additional-impact mt-3">
+                                    <div class="row text-center">
+                                        <div class="col-md-4 mb-3">
+                                            <div class="impact-item">
+                                                <i class="fas fa-hospital fa-lg text-info mb-2"></i>
+                                                <div id="hospitals-count" style="font-size: 1.7rem;">118</div>
+                                                <div class="text-white-50" style="font-size: 0.9rem;">Yeni Hastane</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <div class="impact-item">
+                                                <i class="fas fa-school fa-lg text-warning mb-2"></i>
+                                                <div id="schools-count" style="font-size: 1.7rem;">354</div>
+                                                <div class="text-white-50" style="font-size: 0.9rem;">Yeni Okul</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <div class="impact-item">
+                                                <i class="fas fa-road fa-lg text-success mb-2"></i>
+                                                <div id="roads-count" style="font-size: 1.7rem;">590</div>
+                                                <div class="text-white-50" style="font-size: 0.9rem;">km Yol</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Ek Faydalar -->
+                    <div class="card glass-card mb-5 fade-in">
+                        <div class="card-header">
+                            <h4><i class="fas fa-plus-circle me-2"></i>Enerji Tasarrufu Dışındaki Faydalar</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <div class="text-center">
+                                        <div class="benefit-icon">
+                                            <i class="fas fa-tools fa-lg text-warning"></i>
+                                        </div>
+                                        <h5 class="text-white" style="font-size: 1.1rem;">Bakım Maliyetlerinde Azalma</h5>
+                                        <p class="text-white-50" style="font-size: 0.85rem;">Uzun ömürlü LED teknolojisi ve uzaktan izleme sayesinde yıllık bakım maliyetlerinde %60'a varan azalma</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="text-center">
+                                        <div class="benefit-icon">
+                                            <i class="fas fa-lightbulb fa-lg text-warning"></i>
+                                        </div>
+                                        <h5 class="text-white" style="font-size: 1.1rem;">Ampul Ömründe Artış</h5>
+                                        <p class="text-white-50" style="font-size: 0.85rem;">Geleneksel ampullere göre 5 kat daha uzun ömür, değişim maliyetlerini ve iş gücünü azaltır</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="text-center">
+                                        <div class="benefit-icon">
+                                            <i class="fas fa-network-wired fa-lg text-warning"></i>
+                                        </div>
+                                        <h5 class="text-white" style="font-size: 1.1rem;">Akıllı Şehir Entegrasyonu</h5>
+                                        <p class="text-white-50" style="font-size: 0.85rem;">Hava kalitesi sensörleri, trafik izleme ve acil durum yönetimi için altyapı oluşturma</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-4 mb-5 fade-in">
+                <p class="text-white">© 2025 Akıllı Şehir Çözümleri</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Energy Savings Script -->
+    <script src="energy-savings.js"></script>
+</body>
+</html>
