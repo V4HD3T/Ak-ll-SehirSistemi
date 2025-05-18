@@ -72,18 +72,32 @@ Yürüme engelli bireyler için merdivenler, uygun rampa eksikliği gibi fizikse
 
 ## 📂 Klasör Yapısı (Önerilen)
 
-```plaintext
-📦 AkilliSistemler
- ┣ 📁 aydinlatma-simulasyonu/
+📦 Ak-ll-SehirSistemi
+ ┣ 📜 LICENSE
+ ┣ 📜 README.md
+ ┣ 📁 AtikProject
  ┃ ┣ 📜 index.html
+ ┃ ┣ 📜 script.js
  ┃ ┣ 📜 style.css
- ┃ ┗ 📜 script.js
- ┣ 📁 elektromanyetik-geri-donusum/
- ┃ ┣ 📜 main.ino
- ┃ ┣ 📜 eddy_sensor.py
- ┃ ┗ 📜 read_serial.py
- ┣ 📁 engelsiz-harita/
- ┃ ┣ 📜 map.html
- ┃ ┣ 📜 leaflet.js
- ┃ ┗ 📜 ramp-data.json
- ┗ 📜 README.md
+ ┃ ┗ 📁 .vscode
+ ┃   ┗ 📜 settings.json
+ ┣ 📁 LambaProject
+ ┃ ┣ 📜 chatbot.js
+ ┃ ┣ 📜 energy-savings.html
+ ┃ ┣ 📜 energy-savings.js
+ ┃ ┣ 📜 index.html
+ ┃ ┣ 📜 main.js
+ ┃ ┗ 📜 style.css
+ ┣ 📁 smart-recycle-app
+ ┃ ┣ 📜 dashboard.html
+ ┃ ┣ 📜 dashboard.js
+ ┃ ┣ 📜 index.html
+ ┃ ┣ 📜 login.js
+ ┃ ┣ 📜 recommendations.js
+ ┃ ┣ 📜 style.css
+ ┃ ┗ 📜 utils.js
+ ┗ 📁 yaya-harita-app2
+   ┣ 📜 index.html
+   ┣ 📜 script.js
+   ┗ 📜 style.css
+
