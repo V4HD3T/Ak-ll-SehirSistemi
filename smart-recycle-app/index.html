@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Atık Yönetim Sistemi - Giriş/Kayıt</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Giriş Formu -->
+    <div id="loginForm">
+      <h2><i class="fas fa-recycle"></i> Atık Yönetim Sistemi</h2>
+      <h3>Giriş Yap</h3>
+      
+      <input type="text" id="loginUsername" placeholder="Kullanıcı Adı" required />
+      <input type="password" id="loginPassword" placeholder="Şifre" required />
+      
+      <button type="button" id="loginBtn" class="btn-primary">Giriş Yap</button>
+      
+      <p class="form-footer">Hesabınız yok mu? <a href="#" id="toRegisterLink">Kayıt Ol</a></p>
+    </div>
+    
+    <!-- Kayıt Formu -->
+    <div id="registerForm" class="hidden">
+      <h2><i class="fas fa-recycle"></i> Atık Yönetim Sistemi</h2>
+      <h3>Kayıt Ol</h3>
+      
+      <input type="text" id="registerUsername" placeholder="Kullanıcı Adı" required />
+      <input type="password" id="registerPassword" placeholder="Şifre" required />
+      
+      <button type="button" id="registerBtn" class="btn-primary">Kayıt Ol</button>
+      
+      <p class="form-footer">Zaten hesabınız var mı? <a href="#" id="toLoginLink">Giriş Yap</a></p>
+    </div>
+  </div>
+
+  <script src="utils.js"></script>
+  <script src="login.js"></script>
+</body>
+</html>

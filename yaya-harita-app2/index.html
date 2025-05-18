@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erişilebilir Rota Uygulaması</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Erişilebilir Rota Uygulaması</h1>
+        
+        <div class="controls-container">
+            <div class="input-container">
+                <div class="input-group">
+                    <label for="start">Başlangıç Noktası:</label>
+                    <div class="input-with-button">
+                        <input type="text" id="start" placeholder="Başlangıç adresini girin">
+                        <button id="pickStartBtn" class="pick-btn" title="Haritadan başlangıç noktası seç">
+                            <span class="pin-icon">📍</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="end">Varış Noktası:</label>
+                    <div class="input-with-button">
+                        <input type="text" id="end" placeholder="Varış adresini girin">
+                        <button id="pickEndBtn" class="pick-btn" title="Haritadan varış noktası seç">
+                            <span class="pin-icon">📍</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="accessibleRoute" checked>
+                    <label for="accessibleRoute">Tekerlekli Sandalye Erişilebilir Rota</label>
+                </div>
+                
+                <button id="routeButton">Rota Oluştur</button>
+            </div>
+            
+            <div class="tools-container">
+                <h3>Erişilebilirlik Araçları</h3>
+                <div class="tool-buttons">
+                    <button id="addRampBtn" class="tool-btn">Rampa Ekle</button>
+                    <button id="addRampBtn" class="tool-btn">Sarj İstasyonu Ekle</button>
+                    <button id="addElevatorBtn" class="tool-btn">Asansör Ekle</button>
+                    <button id="addStairsBtn" class="tool-btn">Merdiven Ekle</button>
+                    <button id="clearPointsBtn" class="tool-btn danger">Tüm Noktaları Temizle</button>
+                </div>
+                <div class="info-box">
+                    <p><strong>Haritada Tıklama Modu:</strong> <span id="clickMode">Yok</span></p>
+                    <p>Başlangıç/varış noktası seçmek veya erişilebilirlik noktası eklemek için ilgili butona tıklayın, sonra haritada bir konum seçin.</p>
+                    <p>Eklenen erişilebilirlik noktaları <strong>yerel olarak</strong> saklanır.</p>
+                    <p><strong>Toplam Erişilebilirlik Noktası:</strong> <span id="pointCount">0</span></p>
+                </div>
+            </div>
+        </div>
+        
+        <div id="map"></div>
+        
+        <div id="directions-panel"></div>
+    </div>
+    
+    <script async
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSQrkDSoM_tTKndgN9FTUSPBVq-o3_yxA&libraries=places,geometry&callback=initMap">
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

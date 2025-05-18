@@ -1,0 +1,211 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 20px;
+    background: linear-gradient(135deg, #e3f2fd, #ffffff);
+    animation: backgroundFade 10s ease-in-out infinite alternate;
+}
+
+@keyframes backgroundFade {
+    0% { background: linear-gradient(135deg, #e3f2fd, #ffffff); }
+    100% { background: linear-gradient(135deg, #bbdefb, #ffffff); }
+}
+
+.container {
+    max-width: 700px;
+    margin: auto;
+    background-color: #ffffffee;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #0d47a1;
+    margin-bottom: 25px;
+}
+
+/* Çöp Kutusu */
+.trash-sim {
+    position: relative;
+    width: 280px;
+    height: 370px;
+    margin: auto auto 30px;
+    animation: floatUpDown 4s ease-in-out infinite;
+}
+
+@keyframes floatUpDown {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+.trash-bin {
+    width: 100%;
+    height: 320px;
+    border: 2px solid #90a4ae;
+    border-radius: 10px 10px 0 0;
+    background-color: #e0e0e0;
+    overflow: hidden;
+    position: relative;
+}
+
+.contents {
+    position: absolute;
+    bottom: 40px;
+    width: 100%;
+    transition: transform 0.5s ease;
+}
+
+.layer {
+    width: 100%;
+    color: white;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.other-waste {
+    height: 100px;
+    background-color: #757575;
+}
+
+.aluminum {
+    height: 80px;
+    background-color: #2196f3;
+    position: relative;
+}
+
+.ferrous {
+    height: 80px;
+    background-color: #37474f;
+    position: relative;
+}
+
+.weight-badge {
+    display: none;
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    background-color: yellow;
+    color: black;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+.ferrous .weight-badge {
+    background-color: #ef5350;
+    color: white;
+}
+
+/* Sensor */
+.sensor {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 40px;
+    background-color: #1565c0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+}
+
+.sensor-value {
+    position: absolute;
+    right: 10px;
+    background-color: white;
+    color: #1565c0;
+    padding: 2px 8px;
+    border-radius: 5px;
+}
+
+/* Elektromıknatıs */
+.electromagnet {
+    width: 80%;
+    height: 40px;
+    margin: -2px auto 0;
+    background-color: #c62828;
+    border-radius: 0 0 8px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.electromagnet.active {
+    background-color: #2e7d32;
+}
+
+/* Panel */
+.panel {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 20px;
+}
+
+.panel-header {
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-radius: 10px 10px 0 0;
+    font-weight: bold;
+    margin: -15px -15px 15px;
+}
+
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.results-table td {
+    padding: 10px 5px;
+}
+
+.results-table td:last-child {
+    text-align: right;
+    font-weight: bold;
+}
+
+.metal-weight {
+    color: #2e7d32;
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+}
+
+/* Butonlar */
+.btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-gray { background-color: #757575; color: white; }
+.btn-green { background-color: #43a047; color: white; }
+.btn-blue { background-color: #1e88e5; color: white; }
+.btn-cyan { background-color: #00acc1; color: white; }
+
+.btn:hover {
+    transform: scale(1.03);
+}
+
+.btn-group {
+    display: flex;
+    gap: 12px;
+    margin-top: 15px;
+    justify-content: center;
+}
+
+.info-list {
+    padding-left: 20px;
+    margin: 0;
+}

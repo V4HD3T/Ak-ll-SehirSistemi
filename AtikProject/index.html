@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Çöp Kutusu Metal Ağırlık Ölçüm Simülasyonu</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Çöp Kutusu Metal Ağırlık Ölçüm Simülasyonu</h1>
+
+        <div class="trash-sim">
+            <div class="trash-bin">
+                <div id="contents" class="contents">
+                    <div class="layer other-waste"><span>Diğer Atıklar</span></div>
+                    <div class="layer aluminum">
+                        <span>Alüminyum</span>
+                        <span id="aluminum-weight" class="weight-badge">150</span>
+                    </div>
+                    <div class="layer ferrous">
+                        <span>Ferromanyetik Metaller</span>
+                        <span id="ferrous-weight" class="weight-badge">350</span>
+                    </div>
+                </div>
+                <div class="sensor">
+                    <span>Basınç Sensörü</span>
+                    <span id="sensor-value" class="sensor-value">1000</span>
+                </div>
+            </div>
+            <div id="electromagnet" class="electromagnet">Elektromıknatıs KAPALI</div>
+        </div>
+
+        <div class="panel control-panel">
+            <span>Elektromıknatıs Kontrolü:</span>
+            <button id="toggle-magnet" class="btn btn-gray">Aç</button>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">Ölçüm Sonuçları</div>
+            <table class="results-table">
+                <tr><td>Toplam Çöp Ağırlığı:</td><td>1000</td></tr>
+                <tr><td>Mıknatıs Kapalıyken Basınç:</td><td>1000</td></tr>
+                <tr><td>Mıknatıs Açıkken Basınç:</td><td id="magnet-on-pressure">1000</td></tr>
+                <tr>
+                    <td class="metal-weight">Hesaplanan Metal Ağırlığı:</td>
+                    <td id="calculated-metal" class="metal-weight">?</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="btn-group">
+            <button id="toggle-ferrous" class="btn btn-blue">Ferromanyetik Göster</button>
+            <button id="toggle-aluminum" class="btn btn-cyan">Alüminyum Göster</button>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">Nasıl Çalışır?</div>
+            <ol class="info-list">
+                <li>Başlangıçta sensör 1000 ölçer.</li>
+                <li>Elektromıknatıs açıldığında metaller aşağı çekilir.</li>
+                <li>Ferromanyetik metaller ölçümü artırır (örneğin 1350 olur).</li>
+                <li>Fark = metalin ağırlığıdır.</li>
+            </ol>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">Proje Notları</div>
+            <ul class="info-list">
+                <li>Gerçek sensörler daha hassas olmalıdır.</li>
+                <li>Girdap akımları ile alüminyum tespiti mümkündür.</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Atık Yönetim Sistemi - Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="dashboard-container">
+    <div class="dashboard-header">
+      <div class="logo-area">
+        <i class="fas fa-recycle"></i>
+        <div class="title-container">
+          <h1>Atık Yönetim Sistemi</h1>
+          <span class="subtitle">Hoşgeldiniz, <b id="userDisplay"></b>!</span>
+        </div>
+      </div>
+      <button id="logoutBtn" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Çıkış</button>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-star"></i></div>
+        <div class="stat-info">
+          <span class="stat-value" id="userPoints">0.0</span>
+          <span class="stat-label">Toplam Puan</span>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-coins"></i></div>
+        <div class="stat-info">
+          <span class="stat-value" id="userMoney">0.00</span>
+          <span class="stat-label">TL Kazanç</span>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-weight"></i></div>
+        <div class="stat-info">
+          <span class="stat-value" id="totalWaste">0.0</span>
+          <span class="stat-label">Toplam Atık (kg)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard-content">
+      <div class="content-left">
+        <div class="dashboard-card">
+          <div class="card-header">
+            <h2><i class="fas fa-plus-circle"></i> Atık Ekle</h2>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <label for="wasteType">Atık Türü</label>
+              <select id="wasteType" required>
+                <option value="">Atık Türü Seçiniz</option>
+                <option value="plastic">Plastik</option>
+                <option value="paper">Kağıt</option>
+                <option value="metal">Metal</option>
+                <option value="glass">Cam</option>
+                <option value="organic">Organik</option>
+                <option value="electronic">Elektronik</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="wasteWeight">Ağırlık (kg)</label>
+              <input type="number" id="wasteWeight" placeholder="Ağırlık (kg)" min="0.1" step="0.1" required />
+            </div>
+            <button type="button" id="addWasteBtn" class="btn-primary"><i class="fas fa-plus"></i> Atık Ekle</button>
+          </div>
+        </div>
+
+        <div class="dashboard-card">
+          <div class="card-header">
+            <h2><i class="fas fa-history"></i> Atık Geçmişi</h2>
+            <div class="filter-controls">
+              <select id="historyFilter">
+                <option value="all">Tümü</option>
+                <option value="plastic">Plastik</option>
+                <option value="paper">Kağıt</option>
+                <option value="metal">Metal</option>
+                <option value="glass">Cam</option>
+                <option value="organic">Organik</option>
+                <option value="electronic">Elektronik</option>
+              </select>
+            </div>
+          </div>
+          <div class="card-body">
+            <div id="historyContainer">
+              <ul id="historyList"></ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard-card">
+          <div class="card-header">
+            <h2><i class="fas fa-trophy"></i> Çevre Puanları Sıralaması</h2>
+          </div>
+          <div class="card-body">
+            <div class="leaderboard-container">
+              <table id="leaderboardTable">
+                <thead>
+                  <tr>
+                    <th>Sıra</th>
+                    <th>Kullanıcı</th>
+                    <th>Toplam Puan</th>
+                  </tr>
+                </thead>
+                <tbody id="leaderboardBody">
+                  <!-- Sıralama içeriği JavaScript ile doldurulacak -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-right">
+        <div class="dashboard-card">
+          <div class="card-header">
+            <h2><i class="fas fa-chart-pie"></i> Atık Dağılımı</h2>
+          </div>
+          <div class="card-body">
+            <div class="chart-container">
+              <canvas id="wasteChart"></canvas>
+              <div id="chartPlaceholder" class="placeholder-chart">Henüz atık eklenmemiş</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard-card">
+          <div class="card-header">
+            <h2><i class="fas fa-hand-holding-heart"></i> Çevre İpuçları</h2>
+          </div>
+          <div class="card-body">
+            <div class="tip-container">
+              <div class="tip" id="randomTip">
+                <!-- Rastgele çevre ipucu burada gösterilecek -->
+              </div>
+              <button id="newTipBtn" class="btn-secondary"><i class="fas fa-sync-alt"></i> Yeni İpucu</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="utils.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>
