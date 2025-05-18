@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akıllı Sokak Lambası Simülasyonu</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="city-background">
+        <div class="stars"></div>
+        <div class="container">
+            <!-- Navbar Eklendi -->
+            <nav class="navbar navbar-expand-lg navbar-dark glass-card mt-3 mb-4">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="index.html">
+                        <i class="fas fa-lightbulb me-2"></i>Akıllı Sokak Lambası
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="index.html">Ana Sayfa</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="energy-savings.html">Enerji Tasarrufu Verileri</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            
+            <div class="row mt-4">
+                <div class="col-md-8 offset-md-2 text-center">
+                    <div class="header-container">
+                        <h1 class="text-white mb-3"><i class="fas fa-lightbulb me-2"></i>Akıllı Sokak Lambası Sistemi</h1>
+                        <p class="text-white lead">Enerji tasarrufu ve verimli aydınlatma için akıllı çözüm</p>
+                    </div>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="card glass-card mb-4">
+                                <div class="card-body">
+                                    <div class="scene">
+                                        <div class="road"></div>
+                                        <div class="lamp-container">
+                                            <div class="bulb" id="bulb">
+                                                <div class="light-effect"></div>
+                                            </div>
+                                            <div class="light-reflection" id="light-reflection"></div>
+                                            <div class="lamp-head"></div>
+                                            <div class="pole"></div>
+                                            <div class="base"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="card glass-card mb-4">
+                                <div class="card-header">
+                                    <h4><i class="fas fa-chart-line me-2"></i>Durum Bilgileri</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="status-item">
+                                        <div class="icon"><i class="fas fa-clock"></i></div>
+                                        <div class="label">Mevcut Saat:</div>
+                                        <div class="value" id="current-time">--:--</div>
+                                    </div>
+                                    
+                                    <div class="status-item">
+                                        <div class="icon"><i class="fas fa-sun"></i></div>
+                                        <div class="label">Parlaklık:</div>
+                                        <div class="value">
+                                            <div class="progress">
+                                                <div class="progress-bar" id="brightness-bar" role="progressbar" style="width: 0%"></div>
+                                            </div>
+                                            <span id="brightness">--%</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="status-item">
+                                        <div class="icon"><i class="fas fa-info-circle"></i></div>
+                                        <div class="label">Mod:</div>
+                                        <div class="value" id="status">--</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Saat Kontrolü -->
+                            <div class="card glass-card">
+                                <div class="card-header">
+                                    <h4><i class="fas fa-sliders-h me-2"></i>Saat Simülasyonu</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="time-control">
+                                        <div class="time-display">
+                                            <span id="selected-hour">12</span>:00
+                                        </div>
+                                        <input type="range" class="form-range custom-range" min="0" max="23" id="hour-slider" value="12">
+                                        <div class="time-markers">
+                                            <span>0</span>
+                                            <span>6</span>
+                                            <span>12</span>
+                                            <span>18</span>
+                                            <span>23</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-4 mb-5">
+                        <p class="text-white">© 2025 Akıllı Şehir Çözümleri</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="main.js"></script>
+    <!-- Chat Arayüzü -->
+<div id="chat-container" class="chat-closed">
+    <div id="chat-toggle-button">
+        <i class="fas fa-robot"></i>
+        <span>Soru Sor</span>
+    </div>
+    <div id="chat-box">
+        <div id="chat-header">
+            <h3>Akıllı Sokak Lambası Asistanı</h3>
+            <button id="chat-close" aria-label="Sohbeti kapat">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div id="chat-messages">
+            <div class="bot-message">
+                Merhaba! Akıllı sokak lambaları, enerji tasarrufu ve akıllı şehir çözümleri hakkında sorularınızı yanıtlayabilirim. Ne öğrenmek istersiniz?
+            </div>
+        </div>
+        <div id="chat-input-area">
+            <input type="text" id="chat-input" placeholder="Bir soru sorun...">
+            <button id="chat-send">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Gemini Chatbot Script -->
+<script src="chatbot.js"></script>
+</body>
+</html>
